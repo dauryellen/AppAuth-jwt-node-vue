@@ -27,7 +27,26 @@ exports.registerNewUser = async (req, res) => {
 };
 
 //TODO
-exports.loginUser = async (req, res) => {};
+exports.loginUser = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const user = await User.findByCredentials(email, password);
+
+    if (!user) {
+      return res.status(401).json({
+        error: "Erro ao realizar o login. Verifique suas credenciais.",
+      });
+    }
+
+    const token = await user.generateAuthToken();
+    res
+      .status(201)
+      .json({ message: "Usuário(a) logado(a) com sucesso!", user, token });
+  } catch (error) {
+    res.status(400).json({ error: error });
+  }
+};
 
 //TODO
 exports.returnUserProfile = async (req, res) => {};
