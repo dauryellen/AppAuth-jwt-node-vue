@@ -6,8 +6,10 @@
 const User = require("../models/user.model");
 
 // método responsável por criar um novo User
+// eslint-disable-next-line consistent-return
 exports.registerNewUser = async (req, res) => {
   try {
+    // eslint-disable-next-line prefer-const
     let isUser = await User.find({ email: req.body.email });
     console.log(isUser);
 
@@ -22,18 +24,20 @@ exports.registerNewUser = async (req, res) => {
     const token = await newUser.generateAuthToken();
     res.status(201).json({ message: "User created succesfully!", user, token });
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(400).json({ error });
   }
 };
 
+// eslint-disable-next-line consistent-return
 exports.loginUser = async (req, res) => {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
+    const { email } = req.body;
+    const { password } = req.body;
     const user = await User.findByCredentials(email, password);
 
     if (!user) {
       return res.status(401).json({
+        // eslint-disable-next-line comma-dangle
         error: "Erro ao realizar o login. Verifique suas credenciais.",
       });
     }
@@ -43,7 +47,7 @@ exports.loginUser = async (req, res) => {
       .status(201)
       .json({ message: "Usuário(a) logado(a) com sucesso!", user, token });
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(400).json({ error });
   }
 };
 

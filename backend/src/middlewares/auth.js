@@ -1,9 +1,10 @@
 /**
- * arquivo responsável por confirmar se um determinado(a) 'User' tem autorização para fazer p login
+ * arquivo responsável por confirmar se um determinado(a) 'User' tem autorização para fazer login
  */
 
 const jwt = require("jsonwebtoken");
 
+// eslint-disable-next-line consistent-return
 module.exports = (req, res, next) => {
   try {
     const token = req.headers.authorization.replace("Bearer ", "");
